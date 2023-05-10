@@ -1,6 +1,6 @@
 {
     "name": "smart-city_conectar-un-led",
-    "version": "0.0.0",
+    "version": "0.1.0",
     "description": "",
     "dependencies": {
         "core": "*",
