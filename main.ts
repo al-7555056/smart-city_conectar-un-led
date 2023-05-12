@@ -1,13 +1,41 @@
 input.onButtonPressed(Button.A, function () {
-    if (Interuptor) {
-        Interuptor = false
-        basic.showString("OFF")
+    if (Ajuste) {
+        Brillo += 1
     } else {
-        basic.showString("ON")
-        Interuptor = true
+        if (Interuptor) {
+            Interuptor = false
+            basic.showString("OFF")
+        } else {
+            basic.showString("ON")
+            Interuptor = true
+        }
     }
 })
+input.onButtonPressed(Button.AB, function () {
+    if (Interuptor && Ajuste) {
+        numeros = false
+        basic.clearScreen()
+        basic.showString("Ajuste guardado")
+        Ajuste = false
+    }
+})
+input.onButtonPressed(Button.B, function () {
+    if (Interuptor) {
+        if (!(Ajuste)) {
+            Ajuste = true
+            basic.showString("Ajuste")
+            basic.showString("x10")
+            numeros = true
+        } else {
+            Brillo += -1
+        }
+    }
+})
+let numeros = false
 let Interuptor = false
+let Ajuste = false
+let Brillo = 12
+Ajuste = false
 Interuptor = false
 basic.showLeds(`
     # # # # #
@@ -29,11 +57,18 @@ basic.clearScreen()
 basic.showString("Welcome")
 pins.digitalWritePin(DigitalPin.P0, 0)
 basic.forever(function () {
-    if (Interuptor) {
-        if (input.lightLevel() > 128) {
+    if (numeros) {
+        basic.showNumber(Brillo)
+    }
+})
+basic.forever(function () {
+    if (Interuptor && !(Ajuste)) {
+        if (input.lightLevel() > Brillo * 10) {
             pins.digitalWritePin(DigitalPin.P0, 0)
         } else {
             pins.digitalWritePin(DigitalPin.P0, 1)
         }
+    } else {
+        pins.digitalWritePin(DigitalPin.P0, 0)
     }
 })
